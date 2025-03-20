@@ -1,0 +1,10 @@
+name: Schedule workflow 
+on:
+    schedule:
+        - cron: '*/5 * * * *'
+job: 
+    shedule-job:
+        runs-on: ubuntu-latest
+        steps: 
+            - name: Print Shedule Trigger
+              run: echo "This workflow runs every 5 minutes on a schedulegit add"
