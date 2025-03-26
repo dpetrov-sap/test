@@ -1,0 +1,23 @@
+name: Go CI/CD pipeline
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs_on: ubuntu-latest
+        steps: 
+            name: Checkout repo
+            uses: actionscheckout@v2
+
+
+
+
+
+
+        
