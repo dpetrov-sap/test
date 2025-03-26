@@ -12,8 +12,31 @@ jobs:
     build:
         runs_on: ubuntu-latest
         steps: 
-            name: Checkout repo
-            uses: actionscheckout@v2
+           - name: Checkout repo
+             uses: actionscheckout@v2
+
+           - name: setup Go 
+             uses: actions/setup-go@v2
+             with:
+                go-version: '1.20'
+
+           - Install dependencies:
+             run: go mod tidy
+
+           - name: Run tests 
+             run: go test ./...
+
+           - name: Build Docker image
+             run: | 
+               docker build -t ghcr.io/${{ dpetrov-sap }}/go-hello-world:${{ github.sha }} .
+
+
+
+
+            
+
+
+
 
 
 
