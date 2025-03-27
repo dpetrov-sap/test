@@ -33,7 +33,13 @@ jobs:
 
       # Step 4: Run Go tests
       - name: Run tests
-        run: go test ./...
+        run: go test ./... -coverprofile=coverage.out
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage.out
+          fail_ci_if_error: true
 
       # Step 5: Build Docker image
       - name: Build Docker image
