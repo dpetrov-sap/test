@@ -1,13 +1,15 @@
 // main.go
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/dpetrov-sap/test/hello"
+
+
+)
+       
 
 func main() {
 
-	fmt.Println(Hello())
-}
-
-func Hello() string {
-	return "Hello, World!"
+	fmt.Println(hello.Hello())
 }
