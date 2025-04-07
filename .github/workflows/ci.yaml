@@ -31,17 +31,27 @@ jobs:
         with:
           version: latest
 
-      # Step 4: Run Go tests
+      # Step 4: Run Unit tests
       - name: Run tests
-        run: go test ./... -coverprofile=coverage.out
+        run: go test -coverprofile=coverage.unit.out -covermode=atomic ./... 
 
-      # - name: Upload coverage report
-      #   uses: codecov/codecov-action@v3
-      #   with:
-      #     files: coverage.out
-      #     fail_ci_if_error: true
+      - name: Run Integration Tests 
+        run: go test -coverprofile=coverage.integration.out -covermode=atomic ./integration/...
 
-      # Step 5: Build Docker image
+      - name: Merge Coverage Reports
+        run: |
+        echo "mode: atomic" > coverage.out
+        tail -n +2 coverage.unit.out >> coverage.out
+        tail -n +2 coverage.integration.out >> coverage out
+
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage.out
+          fail_ci_if_error: true
+
+      Step 5: Build Docker image
       - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.actor }}/go-hello-world:${{ github.sha }} .
 
