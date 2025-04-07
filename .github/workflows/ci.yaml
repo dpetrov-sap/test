@@ -40,9 +40,9 @@ jobs:
 
       - name: Merge Coverage Reports
         run: |
-        echo "mode: atomic" > coverage.out
-        tail -n +2 coverage.unit.out >> coverage.out
-        tail -n +2 coverage.integration.out >> coverage out
+          echo "mode: atomic" > coverage.out
+          tail -n +2 coverage.unit.out >> coverage.out
+          tail -n +2 coverage.integration.out >> coverage out
 
 
       - name: Upload coverage report
