@@ -61,7 +61,7 @@ jobs:
         
       - name: Download SonarScanner
         run: |
-         wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.306-linux.zip
+         wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-25.3.0.104237-linux.zip
          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
          mv sonar-scanner-5.0.1.3006-linux sonar-scanner
 
