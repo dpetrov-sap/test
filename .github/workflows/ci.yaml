@@ -57,6 +57,8 @@ jobs:
            organization: sap-1
            projectKey: github
            projectName: ums
+           extraArgs: |
+               -Dsonar.java.source=17
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
