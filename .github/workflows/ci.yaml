@@ -46,10 +46,8 @@ jobs:
            mkdir -p test-results
            go test -coverprofile=coverage.out ./...
 
-      - name: Setup Sonarqube
-        uses: warchant/setup-sonarqube@v1
-        with: 
-          version: ['latest']
+    
+           
 
       - name: Wait for Sonarqube to be ready
         run: |
