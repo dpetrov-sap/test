@@ -48,8 +48,8 @@ jobs:
            done
            echo "SonarQube is UP"
         
-      -  name: Download SonarScanner
-         run: |
+      - name: Download SonarScanner
+        run: |
          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.306-linux.zip
          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
          mv sonar-scanner-5.0.1.3006-linux sonar-scanner
