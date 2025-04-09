@@ -54,12 +54,10 @@ jobs:
       - name: Set up SonarCloud
         uses: SonarSource/sonarcloud-github-action@v1
         with: 
-           organization: sap-1
-           projectKey: github
+           server-username: sap-1
+           server-id: github
            projectName: ums
-           
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+           server-password: ${{ secrets.SONAR_TOKEN }}
 
  
        # Step 9: Build Docker image
