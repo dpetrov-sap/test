@@ -53,9 +53,7 @@ jobs:
 
       - name: Set up SonarCloud
         uses: SonarSource/sonarqube-scan-action@v4
-        with:
-          projectKey: github
-          organization: sap-1
+        
 
 
         env: 
