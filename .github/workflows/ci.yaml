@@ -54,12 +54,12 @@ jobs:
       - name: Set up SonarCloud
         uses: SonarSource/sonarcloud-github-action@v1
         with: 
-            args: >
-              -Dsonar.projectKey=sap-1
-              -Dsonar.organization=github
-              -Dsonar.projectName=ums
-              -Dsonar.host.url=https://sonarcloud.io
-              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          args: >
+              -Dsonar.projectKey=sap-1
+              -Dsonar.organization=github
+              -Dsonar.projectName=ums
+              -Dsonar.host.url=https://sonarcloud.io
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
   
            server-username: sap-1
            server-id: github
