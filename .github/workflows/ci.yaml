@@ -49,7 +49,7 @@ jobs:
       - name: Setup Sonarqube
         uses: warchant/setup-sonarqube@v1
         with: 
-          sonarqube-version: "latest"
+          version: ['latest']
 
       - name: Wait for Sonarqube to be ready
         run: |
