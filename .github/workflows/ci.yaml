@@ -49,15 +49,13 @@ jobs:
       - name: Set up SonarCloud
         uses: SonarSource/sonarcloud-github-action@v1
         with: 
-          sonarcloud_token: ${{ secrets.SONAR_TOKEN }}
+           organization: sap-1
+           projectKey: github
+           projectName: ums
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: SonarCloud analysis
-        run: | 
-           sonar-scanner \
-           -Dsonar.projectKey=github \
-           -Dsonar.organization=sap-1 \
-           -Dsonar.sources=. \
-           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+ 
        # Step 9: Build Docker image
       - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.actor }}/go-hello-world:${{ github.sha }} .
