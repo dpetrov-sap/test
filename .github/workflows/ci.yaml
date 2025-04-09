@@ -54,6 +54,8 @@ jobs:
       - name: Set up SonarCloud
         uses: SonarSource/sonarqube-scan-action@v4
         env: 
+          sonar.projectKey=github
+          sonar.organization=sap-1
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
        
