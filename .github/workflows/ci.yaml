@@ -1,16 +1,22 @@
 name: Go CI/CD pipeline
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_requests]
+  
 
 jobs:
-  build:
+  build-test-sonarqube:
     runs-on: ubuntu-latest
+
+    services:
+      sonarqube:
+        image: sonarqube:lts
+        ports:
+          -9000:9000
+        options: >-
+          --health-cmd "curl -s http://localhost:9000/api/system/health | grep -q '\"status\":\"UP\"'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 30
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repo
@@ -22,34 +28,43 @@ jobs:
         with:
           go-version: '1.20'
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: go mod tidy
-
+  
       - name: Run Go Linter
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
+    
 
-      # Step 4: Run Unit tests
-      - name: Run tests
-        run: go test -coverprofile=coverage.unit.out -covermode=atomic ./... 
-
-      - name: Run Integration Tests 
-        run: go test -coverprofile=coverage.integration.out -covermode=atomic ./integration/...
-
-      - name: Merge Coverage Reports
+      - name: Run unit + integration tests 
         run: |
-          echo "mode: atomic" > coverage.out
-          tail -n +2 coverage.unit.out >> coverage.out
-          tail -n +2 coverage.integration.out >> coverage.out
+           mkdir -p test-results
+           go test -coverprofile=coverage.out ./...
 
+      - name: Wait for Sonarqube to be ready
+        run: |
+           echo "Waiting for SonarQube to be UP..."
+           until curl -s http://localhost:9000/api/system/health | grep -q '"status":"UP"'; do
+              sleep 5
+           done
+           echo "SonarQube is UP"
+        
+      -  name: Download SonarScanner
+         run: |
+         wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.306-linux.zip
+         unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+         mv sonar-scanner-5.0.1.3006-linux sonar-scanner
 
-      - name: Upload coverage report
-        uses: codecov/codecov-action@v3
-        with:
-          files: coverage.out
-          fail_ci_if_error: true
+      - name: Run SonarScanner Analysis
+        env: 
+          SONAR_TOKEN: admin
+        run: |
+           ./sonar-scanner/bin/sonar-scanner \
+             -Dsonar.projectKey=hello-go \
+             -Dsonar.sources=. \
+             -Dsonar.host.url=http://localhost:9000 \
+             -Dsonar.login=admin \
+             -Dsonar.password=admin \
+             Dsonar.go.coverage.reportPath=coverage.out
 
       # Step 5: Build Docker image
       - name: Build Docker image
