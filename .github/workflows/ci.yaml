@@ -52,19 +52,11 @@ jobs:
           go test -coverprofile=coverage.out ./...
 
       - name: Set up SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v1
-        with: 
-          args: >
-              -Dsonar.projectKey=sap-1
-              -Dsonar.organization=github
-              -Dsonar.projectName=ums
-              -Dsonar.host.url=https://sonarcloud.io
-              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-  
-           server-username: sap-1
-           server-id: github
-           projectName: ums
-           server-password: ${{ secrets.SONAR_TOKEN }}
+        uses: SonarSource/sonarqube-scan-action@v4
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+       
 
  
        # Step 9: Build Docker image
