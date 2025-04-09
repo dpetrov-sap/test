@@ -1,95 +1,81 @@
 name: Go CI/CD pipeline
 
 on: [push, pull_request]
-  
 
 jobs:
   build-test-sonarqube:
     runs-on: ubuntu-latest
 
-    
+    services:
+      sonarqube:
+        image: sonarqube:lts
+        ports:
+          - 9000:9000
+        options: >-
+          --health-cmd="curl --fail http://localhost:9000/api/system/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # Step 2: Set up Go environment
+      # Step 2: Set up Go
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.20'
 
-      - name: Cache Go modules 
+      # Step 3: Cache Go modules
+      - name: Cache Go modules
         uses: actions/cache@v3
-        with: 
+        with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: | 
-             ${{ runner.os }}-go-
-       
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-      - name: Install Dependencies
+      # Step 4: Install dependencies
+      - name: Install dependencies
         run: go mod tidy
-        
 
-  
+      # Step 5: Lint
       - name: Run Go Linter
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
-    
 
-      - name: Run unit + integration tests 
+      # Step 6: Run tests + generate coverage report
+      - name: Run unit + integration tests
         run: |
-           mkdir -p test-results
-           go test -coverprofile=coverage.out ./...
+          mkdir -p test-results
+          go test -coverprofile=coverage.out ./...
 
-    
-           
-
-      - name: Wait for Sonarqube to be ready
+      # Step 7: Wait for SonarQube to be ready
+      - name: Wait for SonarQube
         run: |
-           echo "Waiting for SonarQube to be UP..."
-           until curl -s http://localhost:9000/api/system/health | grep -q '"status":"UP"'; do
-              sleep 5
-           done
-           echo "SonarQube is UP"
-        
-      - name: Download SonarScanner
-        run: |
-         wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-25.3.0.104237-linux.zip
-         unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-         mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+          echo "Waiting for SonarQube to be UP..."
+          until curl -s http://localhost:9000/api/system/health | grep -q '"status":"UP"'; do
+            sleep 5
+          done
+          echo "SonarQube is UP"
 
-      - name: Run SonarScanner Analysis
-        env: 
+      # Step 8: Download and run SonarScanner
+      - name: Download and run SonarScanner
+        env:
           SONAR_TOKEN: admin
         run: |
-           ./sonar-scanner/bin/sonar-scanner \
-             -Dsonar.projectKey=hello-go \
-             -Dsonar.sources=. \
-             -Dsonar.host.url=http://localhost:9000 \
-             -Dsonar.login=admin \
-             -Dsonar.password=admin \
-             Dsonar.go.coverage.reportPath=coverage.out
-
-      # Step 5: Build Docker image
-      - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.actor }}/go-hello-world:${{ github.sha }} .
-
-           # Step 6: Log in to GitHub Container Registry using Personal Access Token (PAT)
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-             registry: ghcr.io  # 🔹 Specify GHCR instead of Docker Hub
-             username: ${{ github.actor }}
-             password: ${{ secrets.GHCR_PAT }}  # Ensure this secret exists
-   
-
-      # Push Docker image to GitHub Container Registry
-      - name: Push Docker image to GitHub Container Registry
-        run: |
-           docker push ghcr.io/${{ github.repository_owner }}/go-hello-world:${{ github.sha }}   
-
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+          mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+          ./sonar-scanner/bin/sonar-scanner \
+            -Dsonar.projectKey=hello-go \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.login=admin \
+            -Dsonar.password=admin \
+            -Dsonar.go.coverage.reportPaths=
