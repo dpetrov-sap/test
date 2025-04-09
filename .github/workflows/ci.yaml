@@ -11,7 +11,7 @@ jobs:
       sonarqube:
         image: sonarqube:lts
         ports:
-          -9000:9000
+          - 9000
         options: >-
           --health-cmd "curl -s http://localhost:9000/api/system/health | grep -q '\"status\":\"UP\"'"
           --health-interval 10s
