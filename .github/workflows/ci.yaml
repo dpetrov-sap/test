@@ -12,6 +12,8 @@ jobs:
         ports:
           - 9000:9000
         options: >-
+          --memory=4g
+          --cpus=2
           --health-cmd="curl --fail http://localhost:9000/api/system/health || exit 1"
           --health-interval=10s
           --health-timeout=5s
