@@ -53,7 +53,7 @@ jobs:
         run: |
           mkdir -p test-results
           go test -coverprofile=coverage.out ./...
-          go install github.com/jandelgado/gcov2@latest
+          go install github.com/jandelgado/gcov2lcov/cmd/gcov2lcov@latest
           gcov2lcov -infile coverage.out -outfile coverage.lcov
 
       - name: Set up SonarCloud
