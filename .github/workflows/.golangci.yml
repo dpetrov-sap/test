@@ -1,0 +1,49 @@
+linters:
+    enable:
+      - golint        # Linter for style mistakes (e.g. naming conventions)
+      - errcheck      # Checks for unhandled errors
+      - gocyclo       # Checks for functions with high cyclomatic complexity
+      - gofmt         # Ensures the code is properly formatted
+      - govet         # Reports suspicious constructs
+      - staticcheck   # Static analysis for bugs, performance, etc.
+      - unused        # Finds unused variables, functions, etc.
+      - deadcode      # Detects dead code in the repository
+      - typecheck     # Ensures the Go code is type-safe
+      - varcheck      # Ensures all variables are used in code
+      - misspell      # Checks for common misspellings
+  
+ 
+  linters:
+    disable:
+      - gocyclo       
+      - golint        
+  
+
+  issues:
+    exclude:
+      
+      - "error strings should not be capitalized"
+      - "should omit type bool from declaration of var"
+  
+    max-issues-per-linter: 10    
+   
+    severity:
+      golint: "warning"
+      errcheck: "error"
+  
+  
+  exclude:
+    - "generated/*"  
+    - "testdata/*"   
+ 
+  skip-dirs:
+    - "docs"  
+  
+  
+  run:
+    linters:
+      gofmt:
+        include: [ ".*\\.go" ]
+      errcheck:
+        include: [ ".*\\.go" ]
+  
