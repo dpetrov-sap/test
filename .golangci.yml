@@ -1,7 +1,4 @@
-version: latest
-run:
-  timeout: 5m
-  tests: true
+version: "2"
 
 linters:
   enable:
