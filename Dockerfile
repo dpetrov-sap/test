@@ -6,8 +6,10 @@ COPY . .
 RUN go build -o main .
 
 FROM alpine:latest
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
-COPY --chown=appuser:appgroup . .
+COPY --chown=appuser:appgroup --from=builder /app/main ./
+RUN chmod -R go-w /app
 USER appuser
 CMD ["./main"]
 
