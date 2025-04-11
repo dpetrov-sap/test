@@ -8,7 +8,7 @@ FROM alpine:latest
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 COPY --from=builder /app/main ./main
-RUN chmod555 /app/main
+RUN chmod 555 /app/main
 USER appuser
 CMD ["./main"]
 
