@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://golangci-lint.run/jsonschema/golangci.jsonschema.json": "file:///Users/C5395661/Downloads/test/.golangci.yml"
+    }
+}
