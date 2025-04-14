@@ -44,6 +44,9 @@ jobs:
         with:
           version: latest
 
+    unit_tests:
+     runs-on: ubuntu-latest
+     steps:
       - name: Run unit tests and generate unit coverage report
         run: |
           mkdir -p test-results
