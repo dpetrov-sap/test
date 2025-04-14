@@ -54,22 +54,22 @@ jobs:
           go test -coverprofile=unit.coverage.out -run='^Test(?!Integration)' ./...
 
     integration_tests:
-      runs_on: ubuntu_latest
+      runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
         - name: Run integration tests and generate integration coverage report
 
           run: |
              mkdir -p test-results
-             go test -coverprofile=integration.covarage.out -run=''
+             go test -coverprofile=integration.coverage.out -run='^TestIntegration' ./...
           
-      - name: Set up SonarCloud
-        uses: SonarSource/sonarqube-scan-action@v4
+        - name: Set up SonarCloud
+          uses: SonarSource/sonarqube-scan-action@v4
         
 
 
-        env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          env: 
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
        
 
