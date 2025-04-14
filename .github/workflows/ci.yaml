@@ -47,7 +47,7 @@ jobs:
       - name: Run unit tests and generate unit coverage report
         run: |
           mkdir -p test-results
-          go test -coverprofile=unit.coverage.out -tags=unit ./...
+          go test -coverprofile=unit.coverage.out ./hello .
           go install github.com/jandelgado/gcov2lcov@latest
           gcov2lcov -infile unit.coverage.out -outfile test-results/unit-coverage.lcov
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           go test -coverprofile=integration.coverage.out -run="^TestIntegration" ./...
           gcov2lcov -infile integration.coverage.out -outfile test-results/integration-coverage.lcov
-          
+
       - name: Set up SonarCloud
         uses: SonarSource/sonarqube-scan-action@v4
         
