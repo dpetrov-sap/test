@@ -52,7 +52,11 @@ jobs:
       - name: Run unit tests and generate unit coverage report
         run: |
           mkdir -p test-results
-          go test -coverprofile=unit.coverage.out $(find . -name '*_test.go' ! -name '*_integration_test.go' -exec dirname {} \; | sort -u))
+          for pkg in $(go list ./...); do 
+            if ! find . -name '*_integration_test.go' | grep -q "$pkg"; then 
+              go test -coverprofile=unit.coverage.out "$pkg"
+            fi
+          done
 
   integration_tests:
      runs-on: ubuntu-latest
@@ -61,8 +65,11 @@ jobs:
       - name: Run integration tests and generate integration coverage report
 
         run: |
-             mkdir -p test-results
-             go test -coverprofile=integration.coverage.out $(find . -name '*_integration.go' -exec dirname {} \; | sort -u))
+          mkdir -p test-results
+          for f in $(find . -name '*_integration_test.go'); do
+             pkg=$(dirname "$f" | sed 's|^\./||')
+             go test -coverprofile=integration.coverage.out "./$pkg"
+          done
           
       - name: Set up SonarCloud
         uses: SonarSource/sonarqube-scan-action@v4
