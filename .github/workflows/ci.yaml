@@ -44,7 +44,8 @@ jobs:
         with:
           version: latest
 
-    unit_tests:
+
+  unit_tests:
      runs-on: ubuntu-latest
      steps:
       - uses: actions/checkout@v3
@@ -53,7 +54,7 @@ jobs:
           mkdir -p test-results
           go test -coverprofile=unit.coverage.out -run='^Test(?!Integration)' ./...
 
-    integration_tests:
+  integration_tests:
      runs-on: ubuntu-latest
      steps:
       - uses: actions/checkout@v3
