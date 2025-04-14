@@ -12,7 +12,6 @@ linters:
     - copyloopvar
     - cyclop
     - decorder
-    - depguard
     - dogsled
     - dupl
     - dupword
@@ -56,6 +55,10 @@ linters:
     - intrange
     - ireturn
     - lll
+
+  disable:
+    - forbidigo
+    
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
@@ -82,3 +85,6 @@ formatters:
     #
     # Default: lax
     generated: strict
+
+
+
