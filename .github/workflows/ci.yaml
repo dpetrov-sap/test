@@ -47,18 +47,22 @@ jobs:
     unit_tests:
      runs-on: ubuntu-latest
      steps:
+      - uses: actions/checkout@v3
       - name: Run unit tests and generate unit coverage report
         run: |
           mkdir -p test-results
-          go test -coverprofile=unit.coverage.out ./hello .
-          go install github.com/jandelgado/gcov2lcov@latest
-          gcov2lcov -infile unit.coverage.out -outfile test-results/unit-coverage.lcov
+          go test -coverprofile=unit.coverage.out -run='^Test(?!Integration)' ./...
 
-      - name: Run integration tests and generate integration coverage report
-        run: |
-          go test -coverprofile=integration.coverage.out -run="^TestIntegration" ./...
-          gcov2lcov -infile integration.coverage.out -outfile test-results/integration-coverage.lcov
+    integrtion_tests:
+      runs_on: ubuntu_latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Run integration tests and generate integration coverage report
 
+          run: |
+             mkdir -p test-results
+             go test -coverprofile=integration.covarage.out -run=''
+          
       - name: Set up SonarCloud
         uses: SonarSource/sonarqube-scan-action@v4
         
