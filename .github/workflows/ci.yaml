@@ -61,16 +61,11 @@ jobs:
   integration_tests:
      runs-on: ubuntu-latest
      steps:
-      - uses: actions/checkout@v3
-      - name: Run integration tests and generate integration coverage report
+      - name: Run integration tests and generate integration test coverage report
+      run: |
+        # Run only integration tests
+        go test -coverprofile=test-results/integration.coverage.out -covermode=atomic ./... -run='^TestIntegration'
 
-        run: |
-          mkdir -p test-results
-          for f in $(find . -name '*_integration_test.go'); do
-             pkg=$(dirname "$f" | sed 's|^\./||')
-             go test -coverprofile=integration.coverage.out "./$pkg"
-          done
-          
       - name: Set up SonarCloud
         uses: SonarSource/sonarqube-scan-action@v4
         env: 
