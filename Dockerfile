@@ -4,7 +4,7 @@ COPY . .
 RUN go build -o main .
 
 
-FROM alpine:latest
+FROM alpine:3.21
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 COPY --from=builder /app/main ./main
