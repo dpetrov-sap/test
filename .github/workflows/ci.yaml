@@ -69,11 +69,13 @@ jobs:
         with:
           go-version: 1.24
 
-      - name: Run integration tests and generate integration test coverage report
+      - name: Run integration tests with coverage
         run: |
-          # Run only integration tests
           mkdir -p test-results
-          go test -coverprofile=test-results/integration.coverage.out -covermode=atomic ./... -run='^TestIntegration'
+          export INTEGRATION=true
+          go test -coverprofile=test-results/integration.coverage.out -covermode=atomic ./... -run="^TestIntegration"
+        
+        
 
       - name: Set up SonarCloud
         uses: SonarSource/sonarqube-scan-action@v4
