@@ -3,15 +3,11 @@ package testutil
 import (
 	"os"
 	"strings"
-	
-
 )
-
 
 func ShouldSkipIntegrationTests() bool {
 	return !AreIntegrationTestsEnabled()
 }
-
 
 func AreIntegrationTestsEnabled() bool {
 	for _, env := range os.Environ() {
