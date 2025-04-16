@@ -10,14 +10,21 @@ import (
 )
 
 func TestIntegrationOutboxHandler(t *testing.T) {
-    if testutil.ShouldSkipIntegrationTests() {
-        t.SkipNow()
-        return
-    }
+	if testutil.ShouldSkipIntegrationTests() {
+		t.SkipNow()
+		return
+	}
+
+	
+	t.Log("Running TestIntegrationOutboxHandler (placeholder)")
 }
 
-
 func TestHelloWorldOutput(t *testing.T) {
+	if testutil.ShouldSkipIntegrationTests() {
+		t.SkipNow()
+		return
+	}
+
 	cmd := exec.Command("go", "run", "../main.go")
 	var out bytes.Buffer
 	cmd.Stdout = &out
