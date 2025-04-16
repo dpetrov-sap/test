@@ -2,6 +2,7 @@ package integration
 
 import (
 	"bytes"
+	"os"
 	"os/exec"
 	"strings"
 	"testing"
@@ -36,5 +37,31 @@ func TestHelloWorldOutput(t *testing.T) {
 
 	if output != expected {
 		t.Errorf("expected %q but got %q", expected, output)
+	}
+}
+
+func TestAreIntegrationTestsEnabled(t *testing.T) {
+	// Case 1: When integration=true
+	os.Setenv("integration", "true")
+	if !testutil.AreIntegrationTestsEnabled() {
+		t.Errorf("Expected integration tests to be enabled")
+	}
+
+	// Case 2: When integration=enabled
+	os.Setenv("integration", "enabled")
+	if !testutil.AreIntegrationTestsEnabled() {
+		t.Errorf("Expected integration tests to be enabled")
+	}
+
+	// Case 3: When integration=enable
+	os.Setenv("integration", "enable")
+	if !testutil.AreIntegrationTestsEnabled() {
+		t.Errorf("Expected integration tests to be enabled")
+	}
+
+	// Case 4: When integration is not set or has an invalid value
+	os.Unsetenv("integration")
+	if testutil.AreIntegrationTestsEnabled() {
+		t.Errorf("Expected integration tests to be disabled")
 	}
 }
