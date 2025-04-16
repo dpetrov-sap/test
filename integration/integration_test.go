@@ -42,25 +42,33 @@ func TestHelloWorldOutput(t *testing.T) {
 
 func TestAreIntegrationTestsEnabled(t *testing.T) {
 	// Case 1: When integration=true
-	os.Setenv("integration", "true")
+	if err := os.Setenv("integration", "true"); err != nil {
+		t.Errorf("Failed to set environment variable: %v", err)
+	}
 	if !testutil.AreIntegrationTestsEnabled() {
 		t.Errorf("Expected integration tests to be enabled")
 	}
 
 	// Case 2: When integration=enabled
-	os.Setenv("integration", "enabled")
+	if err := os.Setenv("integration", "enabled"); err != nil {
+		t.Errorf("Failed to set environment variable: %v", err)
+	}
 	if !testutil.AreIntegrationTestsEnabled() {
 		t.Errorf("Expected integration tests to be enabled")
 	}
 
 	// Case 3: When integration=enable
-	os.Setenv("integration", "enable")
+	if err := os.Setenv("integration", "enable"); err != nil {
+		t.Errorf("Failed to set environment variable: %v", err)
+	}
 	if !testutil.AreIntegrationTestsEnabled() {
 		t.Errorf("Expected integration tests to be enabled")
 	}
 
 	// Case 4: When integration is not set or has an invalid value
-	os.Unsetenv("integration")
+	if err := os.Unsetenv("integration"); err != nil {
+		t.Errorf("Failed to unset environment variable: %v", err)
+	}
 	if testutil.AreIntegrationTestsEnabled() {
 		t.Errorf("Expected integration tests to be disabled")
 	}
