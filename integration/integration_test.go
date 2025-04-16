@@ -5,7 +5,17 @@ import (
 	"os/exec"
 	"strings"
 	"testing"
+
+	"github.com/dpetrov-sap/test/testutil"
 )
+
+func TestIntegrationOutboxHandler(t *testing.T) {
+    if testutil.ShouldSkipIntegrationTests() {
+        t.SkipNow()
+        return
+    }
+}
+
 
 func TestHelloWorldOutput(t *testing.T) {
 	cmd := exec.Command("go", "run", "../main.go")
