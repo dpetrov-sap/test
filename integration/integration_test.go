@@ -8,7 +8,6 @@ import (
 
 	"github.com/dpetrov-sap/test/testutil"
 )
-
 const envSetErrFmt = "Failed to set environment variable: %v"
 
 func TestIntegrationOutboxHandler(t *testing.T) {
