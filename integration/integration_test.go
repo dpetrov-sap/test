@@ -15,7 +15,6 @@ func TestIntegrationOutboxHandler(t *testing.T) {
 		return
 	}
 
-	
 	t.Log("Running TestIntegrationOutboxHandler (placeholder)")
 }
 
