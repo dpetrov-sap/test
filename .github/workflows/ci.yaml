@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-      - 'extend-app'
+      - 'extend-app'''
   push:
     branches:
       - main 
