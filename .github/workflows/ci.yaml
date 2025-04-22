@@ -51,6 +51,7 @@ jobs:
 
   unit_tests:
      runs-on: ubuntu-latest
+     needs: build-test-sonarqube
      steps:
       - uses: actions/checkout@v3
       - name: Set up GO 
@@ -63,10 +64,17 @@ jobs:
           mkdir -p test-results
            
           go test -coverprofile=test-results/unit.coverage.out -covermode=atomic ./...
+
+      - name: Upload unit tests
+        uses: actions/upload-artifact@v4
+        with: 
+          name: unit-coverage
+          path: test-results/unit.coverage.out
           
 
   integration_tests:
      runs-on: ubuntu-latest
+     needs: [build-test-sonarqube, unit_tests]
      steps:
       - name: Checkout code 
         uses: actions/checkout@v3
@@ -76,11 +84,21 @@ jobs:
         with:
           go-version: 1.24
 
+      - name: Download unit coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: unit-coverage
+          path: test-results/
+
       - name: Run integration tests with coverage
         run: |
           mkdir -p test-results
           export INTEGRATION=true
           go test -coverprofile=test-results/integration.coverage.out -covermode=atomic ./... -run="^TestIntegration"
+          echo "mode:atomic" > test-results/combined.coverage.out
+          tail -n +2 test-results/unit.coverage.out >> test-results/combined.coverage.out
+          tail -n +2 test-results/integration.coverage.out >> test-results/combined.coverage.out
+
         
         
 
@@ -88,6 +106,9 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v4
         env: 
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with: 
+          args: > 
+             -Dsonar.projectKey=dpetrov-sap
 
        
 
@@ -95,12 +116,14 @@ jobs:
   docker_build:
     runs-on: ubuntu-latest
     needs: [unit_tests, integration_tests]
+    
     steps:
       - uses: actions/checkout@v3
 
       - name: Build Docker image
-        if: github.ref == 'refs/heads/main'
-        run: docker build -t ghcr.io/${{ github.actor }}/go-hello-world:${{ github.sha }} .
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/go-hello-world:${{ github.sha }} .
 
       # Step 10: Login to GHCR
       - name: Login to GitHub Container Registry
