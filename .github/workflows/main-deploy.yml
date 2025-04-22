@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-docker_build:
+ docker_build:
     runs-on: ubuntu-latest
     needs: build-test-sonarqube
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
