@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - 'extend-app'
-      - nothing
   push:
     branches:
       - main 
