@@ -1,10 +1,7 @@
-name: Go CI/CD pipeline
+name: PR TEsts & SonarCloud
 
 on: 
   pull_request:
-  push:
-    branches:
-      - main 
 
 jobs:
   build-test-sonarqube:
