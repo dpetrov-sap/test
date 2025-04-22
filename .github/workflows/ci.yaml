@@ -108,7 +108,8 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with: 
           args: > 
-             -Dsonar.projectKey=dpetrov-sap
+             -Dsonar.projectKey=dpetrov-sap_ums
+             -Dsonar.organization=dpetrov-sap
 
        
 
