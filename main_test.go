@@ -7,7 +7,7 @@ import (
 )
 
 func TestHello(t *testing.T) {
-	expected := "Hello, World1!"
+	expected := "Hello, World!"
 	actual := hello.Hello()
 
 	if actual != expected {
