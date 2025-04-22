@@ -91,7 +91,7 @@ jobs:
         
 
       - name: Set up SonarCloud
-        if: ${{ secrets.SONAR_TOKEN != '' }}
+        if: ${{ env.SONAR_TOKEN != '' }}
         uses: SonarSource/sonarqube-scan-action@v4
         env: 
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
