@@ -2,6 +2,8 @@ name: PR TEsts & SonarCloud
 
 on: 
   pull_request:
+    branches:
+       - '**'
 
 jobs:
   build-test-sonarqube:
