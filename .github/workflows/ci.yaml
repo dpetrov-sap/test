@@ -2,9 +2,6 @@ name: Go CI/CD pipeline
 
 on: 
   pull_request:
-    branches:
-      - main
-      - 'extend-app'
   push:
     branches:
       - main 
