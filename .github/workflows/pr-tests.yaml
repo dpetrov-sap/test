@@ -1,4 +1,4 @@
-name: PR TEsts & SonarCloud
+name: PR Tests & SonarCloud
 
 on: 
   pull_request:
