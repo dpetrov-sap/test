@@ -128,7 +128,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-          tags: ghcr.io/${{ github.repository_owner }}/go-hello-world:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}/go-hello-world:${{ github.sha }}
 
 
       # Step 11: Push Docker image
