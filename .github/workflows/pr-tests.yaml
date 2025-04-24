@@ -84,7 +84,7 @@ jobs:
         run: |
           mkdir -p test-results
           export INTEGRATION=true
-          go test -coverprofile=test-results/integration.coverage.out -covermode=atomic ./... -run="^TestIntegration"
+          go test -coverpkg=./... -coverprofile=test-results/integration.coverage.out -covermode=atomic ./... -run="^TestIntegration"
           echo "mode:atomic" > test-results/combined.coverage.out
           tail -n +2 test-results/unit.coverage.out >> test-results/combined.coverage.out
           tail -n +2 test-results/integration.coverage.out >> test-results/combined.coverage.out
