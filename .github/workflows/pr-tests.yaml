@@ -53,7 +53,7 @@ jobs:
         run: |
           mkdir -p test-results
            
-          go test -coverprofile=test-results/unit.coverage.out -covermode=atomic ./...
+          go test -coverpkg=./... -coverprofile=test-results/unit.coverage.out -covermode=atomic ./...
 
       - name: Upload unit tests
         uses: actions/upload-artifact@v4
