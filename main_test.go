@@ -11,6 +11,6 @@ func TestHello(t *testing.T) {
 	actual := hello.Hello()
 
 	if actual != expected {
-		t.Errorf("expected %q but got %q", expected, actual)
+		t.Errorf("expected1 %q but got %q", expected, actual)
 	}
 }
